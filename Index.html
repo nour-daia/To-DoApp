@@ -7,6 +7,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+     <button id="addBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+     Add Todo
+  </button>
+
+<div id="popupForm" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-6 rounded-lg w-80 shadow-lg relative">
+      <h2 class="text-xl font-semibold mb-4 text-center">Add New Todo</h2>
+
+      <form id="todoForm" class="space-y-3">
+        <input type="text" id="title" placeholder="Title" class="w-full border rounded px-3 py-2" required />
+        <textarea id="description" placeholder="Description" class="w-full border rounded px-3 py-2" required></textarea>
+        <input type="time" id="time" class="w-full border rounded px-3 py-2" required />
+
+        <div class="flex justify-between mt-4">
+          <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Save</button>
+          <button type="button" id="closeBtn" class="text-red-500 hover:underline">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 <div id="todolist">
 
 </div>

@@ -74,8 +74,6 @@ const todos = [
 const divlist=document.getElementById('todolist')
 
 
-
-
 todos.forEach((element) => {
 const card=document.createElement("div")
 card.className="bg-white p-4 rounded-lg shadow flex items-start gap-4"
@@ -90,4 +88,42 @@ card.innerHTML=` <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${
   `;
   divlist.appendChild(card);
 });
+
+
+
+const addBtn = document.getElementById('addBtn');
+    const popupForm = document.getElementById('popupForm');
+    const closeBtn = document.getElementById('closeBtn');
+    const todoForm = document.getElementById('todoForm');
+
+    addBtn.addEventListener('click', () => {
+      popupForm.classList.remove('hidden');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      popupForm.classList.add('hidden');
+    });
+
+    todoForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const time = document.getElementById('time').value;
+const card=document.createElement("div")
+card.className="bg-white p-4 rounded-lg shadow flex items-start gap-4"
+card.innerHTML=` <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${
+      false ? "checked" : ""
+    }>
+    <div>
+      <h2 class="text-xl font-semibold">${title}</h2>
+      <p class="text-gray-600">${description}</p>
+      <div class="text-sm text-gray-500 mt-1"> ${time}</div>
+    </div>
+  `;
+  divlist.appendChild(card);
+
+      popupForm.classList.add('hidden');
+      todoForm.reset();
+      alert("Add Anew ToDo")
+    });
 
