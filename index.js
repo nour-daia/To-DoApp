@@ -75,17 +75,26 @@ const divlist=document.getElementById('todolist')
 
 
 todos.forEach((element) => {
-const card=document.createElement("div")
-card.className="bg-white p-4 rounded-lg shadow flex items-start gap-4"
-card.innerHTML=` <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${
-      element.completed ? "checked" : ""
-    }>
+const card = document.createElement("div");
+card.className = "bg-white p-4 rounded-lg shadow flex items-start gap-4 justify-between";
+card.innerHTML = `
+  <div class="flex gap-4">
+    <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${element.completed ? "checked" : ""}>
     <div>
       <h2 class="text-xl font-semibold">${element.title}</h2>
       <p class="text-gray-600">${element.description}</p>
       <div class="text-sm text-gray-500 mt-1"> ${element.time}</div>
     </div>
-  `;
+  </div>
+
+  <button   class="delete-btn text-red-500 hover:text-red-700 font-bold text-xl">delete</button>
+`;
+  const deleteBtn = card.querySelector(".delete-btn");
+deleteBtn.addEventListener("click", () => {
+  card.remove(); 
+      alert("Delete ToDo")
+
+})
   divlist.appendChild(card);
 });
 
@@ -109,21 +118,32 @@ const addBtn = document.getElementById('addBtn');
       const title = document.getElementById('title').value;
       const description = document.getElementById('description').value;
       const time = document.getElementById('time').value;
-const card=document.createElement("div")
-card.className="bg-white p-4 rounded-lg shadow flex items-start gap-4"
-card.innerHTML=` <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${
-      false ? "checked" : ""
-    }>
+const card = document.createElement("div");
+card.className = "bg-white p-4 rounded-lg shadow flex items-start gap-4 justify-between";
+card.innerHTML = `
+  <div class="flex gap-4">
+    <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${false ? "checked" : ""}>
     <div>
       <h2 class="text-xl font-semibold">${title}</h2>
       <p class="text-gray-600">${description}</p>
       <div class="text-sm text-gray-500 mt-1"> ${time}</div>
     </div>
-  `;
+  </div>
+
+  <button   class="delete-btn text-red-500 hover:text-red-700 font-bold text-xl">delete</button>
+`;
+  const deleteBtn = card.querySelector(".delete-btn");
+deleteBtn.addEventListener("click", () => {
+  card.remove(); 
+      alert("Delete ToDo")
+
+})
   divlist.appendChild(card);
 
       popupForm.classList.add('hidden');
       todoForm.reset();
       alert("Add Anew ToDo")
     });
+
+
 
