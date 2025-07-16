@@ -71,79 +71,104 @@ const todos = [
   },
 ];
 
-const divlist=document.getElementById('todolist')
+    const divlist = document.getElementById("todolist");
+    const addBtn = document.getElementById("addBtn");
+    const popupForm = document.getElementById("popupForm");
+    const closeBtn = document.getElementById("closeBtn");
+    const todoForm = document.getElementById("todoForm");
 
+    const titleInput = document.getElementById("title");
+    const descInput = document.getElementById("description");
+    const timeInput = document.getElementById("time");
 
-todos.forEach((element) => {
-const card = document.createElement("div");
-card.className = "bg-white p-4 rounded-lg shadow flex items-start gap-4 justify-between";
-card.innerHTML = `
-  <div class="flex gap-4">
-    <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${element.completed ? "checked" : ""}>
-    <div>
-      <h2 class="text-xl font-semibold">${element.title}</h2>
-      <p class="text-gray-600">${element.description}</p>
-      <div class="text-sm text-gray-500 mt-1"> ${element.time}</div>
-    </div>
-  </div>
+    let Editcard = null;
 
-  <button   class="delete-btn text-red-500 hover:text-red-700 font-bold text-xl">delete</button>
-`;
-  const deleteBtn = card.querySelector(".delete-btn");
-deleteBtn.addEventListener("click", () => {
-  card.remove(); 
-      alert("Delete ToDo")
+    function createCard(title, description, time, completed = false) {
+      const card = document.createElement("div");
+      card.className = "Card bg-white p-4 rounded-lg shadow flex items-start gap-4 justify-between";
 
-})
-  divlist.appendChild(card);
-});
+      card.innerHTML = `
+        <div class="flex gap-4">
+          <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${completed ? "checked" : ""}>
+          <div>
+            <h2 class="text-xl font-semibold todo-title">${title}</h2>
+            <p class="text-gray-600 todo-desc">${description}</p>
+            <div class="text-sm text-gray-500 mt-1 todo-time">${time}</div>
+          </div>
+        </div>
 
+        <div class="space-x-2">
+          <button class="edit-btn text-blue-500 hover:text-blue-700 font-bold text-sm">Edit</button>
+          <button class="delete-btn text-red-500 hover:text-red-700 font-bold text-sm">Delete</button>
+        </div>
+      `;
 
+      const titleElem = card.querySelector(".todo-title");
+      const descElem = card.querySelector(".todo-desc");
+      const timeElem = card.querySelector(".todo-time");
 
-const addBtn = document.getElementById('addBtn');
-    const popupForm = document.getElementById('popupForm');
-    const closeBtn = document.getElementById('closeBtn');
-    const todoForm = document.getElementById('todoForm');
+      const editBtn = card.querySelector('.edit-btn');
+      editBtn.addEventListener('click', () => EditTodo(card, titleElem, descElem, timeElem));
 
-    addBtn.addEventListener('click', () => {
-      popupForm.classList.remove('hidden');
+      const deleteBtn = card.querySelector('.delete-btn');
+      deleteBtn.addEventListener('click', () => {
+        card.remove();
+        alert("ToDo deleted");
+      });
+
+      divlist.appendChild(card);
+    }
+
+    function EditTodo(card, titleElem, descElem, timeElem) {
+      Editcard = { card, titleElem, descElem, timeElem };
+      titleInput.value = titleElem.textContent;
+      descInput.value = descElem.textContent;
+      timeInput.value = timeElem.textContent.trim();
+      popupForm.classList.remove("hidden");
+    }
+
+    todos.forEach(todo => {
+      createCard(todo.title, todo.description, todo.time, todo.completed);
     });
 
-    closeBtn.addEventListener('click', () => {
-      popupForm.classList.add('hidden');
+    addBtn.addEventListener("click", () => {
+      Editcard = null;
+      popupForm.classList.remove("hidden");
     });
 
-    todoForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const title = document.getElementById('title').value;
-      const description = document.getElementById('description').value;
-      const time = document.getElementById('time').value;
-const card = document.createElement("div");
-card.className = "bg-white p-4 rounded-lg shadow flex items-start gap-4 justify-between";
-card.innerHTML = `
-  <div class="flex gap-4">
-    <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${false ? "checked" : ""}>
-    <div>
-      <h2 class="text-xl font-semibold">${title}</h2>
-      <p class="text-gray-600">${description}</p>
-      <div class="text-sm text-gray-500 mt-1"> ${time}</div>
-    </div>
-  </div>
-
-  <button   class="delete-btn text-red-500 hover:text-red-700 font-bold text-xl">delete</button>
-`;
-  const deleteBtn = card.querySelector(".delete-btn");
-deleteBtn.addEventListener("click", () => {
-  card.remove(); 
-      alert("Delete ToDo")
-
-})
-  divlist.appendChild(card);
-
-      popupForm.classList.add('hidden');
+    closeBtn.addEventListener("click", () => {
+      popupForm.classList.add("hidden");
       todoForm.reset();
-      alert("Add Anew ToDo")
     });
+
+    todoForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const title = titleInput.value;
+      const description = descInput.value;
+      const time = timeInput.value;
+
+      if (Editcard) {
+        Editcard.titleElem.textContent = title;
+        Editcard.descElem.textContent = description;
+        Editcard.timeElem.textContent = time;
+        alert("Edit suc");
+        Editcard = null;
+      } else {
+        createCard(title, description, time);
+        alert("Add Suc");
+      }
+
+      popupForm.classList.add("hidden");
+      todoForm.reset();
+    });
+
+
+
+
+
+
+
 
 
 
