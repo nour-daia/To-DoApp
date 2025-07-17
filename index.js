@@ -72,21 +72,10 @@ const todos = [
 ];
 
     const divlist = document.getElementById("todolist");
-    const addBtn = document.getElementById("addBtn");
-    const popupForm = document.getElementById("popupForm");
-    const closeBtn = document.getElementById("closeBtn");
-    const todoForm = document.getElementById("todoForm");
 
-    const titleInput = document.getElementById("title");
-    const descInput = document.getElementById("description");
-    const timeInput = document.getElementById("time");
-
-    let Editcard = null;
-
-    function createCard(title, description, time, completed = false) {
+function createCard(title, description, time, completed = false) {
       const card = document.createElement("div");
-      card.className = "Card bg-white p-4 rounded-lg shadow flex items-start gap-4 justify-between";
-
+      card.className = "Card bg-white border p-4 rounded-lg shadow flex items-start gap-4 justify-between";
       card.innerHTML = `
         <div class="flex gap-4">
           <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${completed ? "checked" : ""}>
@@ -103,23 +92,49 @@ const todos = [
         </div>
       `;
 
-      const titleElem = card.querySelector(".todo-title");
-      const descElem = card.querySelector(".todo-desc");
-      const timeElem = card.querySelector(".todo-time");
+      const titleElemtoedit = card.querySelector(".todo-title")
+      const descElemtoedit = card.querySelector(".todo-desc")
+      const timeElemtoedit = card.querySelector(".todo-time")
 
       const editBtn = card.querySelector('.edit-btn');
-      editBtn.addEventListener('click', () => EditTodo(card, titleElem, descElem, timeElem));
+      editBtn.addEventListener('click', () => EditTodo(card, titleElemtoedit, descElemtoedit, timeElemtoedit));
 
       const deleteBtn = card.querySelector('.delete-btn');
       deleteBtn.addEventListener('click', () => {
         card.remove();
+        totalcount();
         alert("ToDo deleted");
       });
-
+     totalcount();
       divlist.appendChild(card);
     }
+    todos.forEach(todo => {
+      createCard(todo.title, todo.description, todo.time, todo.completed);
+    });
 
-    function EditTodo(card, titleElem, descElem, timeElem) {
+
+
+    let Editcard = null;
+    const addBtn = document.getElementById("addBtn");
+    const popupForm = document.getElementById("popupForm");
+    const todoForm = document.getElementById("todoForm");
+  addBtn.addEventListener("click", () => {
+      Editcard = null;
+      popupForm.classList.remove("hidden");
+    });
+    const closeBtn = document.getElementById("closeBtn");
+
+  closeBtn.addEventListener("click", () => {
+      popupForm.classList.add("hidden");
+      todoForm.reset();
+    });
+
+
+    const titleInput = document.getElementById("title");
+    const descInput = document.getElementById("description");
+    const timeInput = document.getElementById("time");
+
+     function EditTodo(card, titleElem, descElem, timeElem) {
       Editcard = { card, titleElem, descElem, timeElem };
       titleInput.value = titleElem.textContent;
       descInput.value = descElem.textContent;
@@ -127,19 +142,7 @@ const todos = [
       popupForm.classList.remove("hidden");
     }
 
-    todos.forEach(todo => {
-      createCard(todo.title, todo.description, todo.time, todo.completed);
-    });
 
-    addBtn.addEventListener("click", () => {
-      Editcard = null;
-      popupForm.classList.remove("hidden");
-    });
-
-    closeBtn.addEventListener("click", () => {
-      popupForm.classList.add("hidden");
-      todoForm.reset();
-    });
 
     todoForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -156,6 +159,7 @@ const todos = [
         Editcard = null;
       } else {
         createCard(title, description, time);
+        totalcount();
         alert("Add Suc");
       }
 
@@ -163,12 +167,7 @@ const todos = [
       todoForm.reset();
     });
 
-
-
-
-
-
-
-
-
-
+    function totalcount(){
+  const count = divlist.querySelectorAll(".Card").length;
+      document.getElementById("total").textContent = count;
+    }
