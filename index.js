@@ -74,40 +74,67 @@ const todos = [
     const divlist = document.getElementById("todolist");
 
 function createCard(title, description, time, completed = false) {
-      const card = document.createElement("div");
-      card.className = "Card bg-white border p-4 rounded-lg shadow flex items-start gap-4 justify-between";
-      card.innerHTML = `
-        <div class="flex gap-4">
-          <input type="checkbox" class="mt-1 w-5 h-5 accent-green-500" ${completed ? "checked" : ""}>
-          <div>
-            <h2 class="text-xl font-semibold todo-title">${title}</h2>
-            <p class="text-gray-600 todo-desc">${description}</p>
-            <div class="text-sm text-gray-500 mt-1 todo-time">${time}</div>
-          </div>
-        </div>
+  const card = document.createElement("div");
+  card.className = "Card bg-white border p-4 rounded-lg shadow flex items-start gap-4 justify-between";
 
-        <div class="space-x-2">
-          <button class="edit-btn text-blue-500 hover:text-blue-700 font-bold text-sm">Edit</button>
-          <button class="delete-btn text-red-500 hover:text-red-700 font-bold text-sm">Delete</button>
-        </div>
-      `;
+  const leftDiv = document.createElement("div");
+  leftDiv.className = "flex gap-4";
 
-      const titleElemtoedit = card.querySelector(".todo-title")
-      const descElemtoedit = card.querySelector(".todo-desc")
-      const timeElemtoedit = card.querySelector(".todo-time")
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.className = "mt-1 w-5 h-5 accent-green-500";
+  if (completed) checkbox.checked = true;
 
-      const editBtn = card.querySelector('.edit-btn');
-      editBtn.addEventListener('click', () => EditTodo(card, titleElemtoedit, descElemtoedit, timeElemtoedit));
+  const textDiv = document.createElement("div");
 
-      const deleteBtn = card.querySelector('.delete-btn');
-      deleteBtn.addEventListener('click', () => {
-        card.remove();
-        totalcount();
-        alert("ToDo deleted");
-      });
-     totalcount();
-      divlist.appendChild(card);
-    }
+  const titleElem = document.createElement("h2");
+  titleElem.className = "text-xl font-semibold todo-title";
+  titleElem.textContent = title;
+
+  const descElem = document.createElement("p");
+  descElem.className = "text-gray-600 todo-desc";
+  descElem.textContent = description;
+
+  const timeElem = document.createElement("div");
+  timeElem.className = "text-sm text-gray-500 mt-1 todo-time";
+  timeElem.textContent = time;
+
+  textDiv.appendChild(titleElem);
+  textDiv.appendChild(descElem);
+  textDiv.appendChild(timeElem);
+
+  leftDiv.appendChild(checkbox);
+  leftDiv.appendChild(textDiv);
+
+  const buttonDiv = document.createElement("div");
+  buttonDiv.className = "space-x-2";
+
+  const editBtn = document.createElement("button");
+  editBtn.className = "edit-btn text-blue-500 hover:text-blue-700 font-bold text-sm";
+  editBtn.textContent = "Edit";
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "delete-btn text-red-500 hover:text-red-700 font-bold text-sm";
+  deleteBtn.textContent = "Delete";
+
+  buttonDiv.appendChild(editBtn);
+  buttonDiv.appendChild(deleteBtn);
+
+  card.appendChild(leftDiv);
+  card.appendChild(buttonDiv);
+
+  editBtn.addEventListener('click', () => EditTodo(card, titleElem, descElem, timeElem));
+
+  deleteBtn.addEventListener('click', () => {
+    card.remove();
+    totalcount();
+    alert("ToDo deleted");
+  });
+
+  totalcount();
+  divlist.appendChild(card);
+}
+
     todos.forEach(todo => {
       createCard(todo.title, todo.description, todo.time, todo.completed);
     });
